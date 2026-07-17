@@ -791,6 +791,36 @@ See xref:my-table[xrefstyle=short] for more reference.
     )
   })
 
+  for (const [defaultStyle, themeStylesheet] of [
+    ['github-light', 'asciidoctor-github-light.css'],
+    ['github-dark', 'asciidoctor-github-dark.css'],
+  ] as const) {
+    test(`Should use the ${defaultStyle} stylesheet when selected`, async () => {
+      const html = await convertStandaloneWithFragment(
+        '= Title\n\nSome content',
+        undefined,
+        defaultStyle,
+      )
+      assert.ok(
+        html.includes('asciidoctor-default.css') &&
+          html.includes(themeStylesheet) &&
+          html.includes('asciidoctor-github.css'),
+        `expected the Asciidoctor default base, GitHub theme, and GitHub stylesheet in:\n${html}`,
+      )
+      assert.ok(
+        html.indexOf('asciidoctor-default.css') <
+          html.indexOf(themeStylesheet) &&
+          html.indexOf(themeStylesheet) <
+            html.indexOf('asciidoctor-github.css'),
+        `expected the GitHub stylesheets to be layered after the default base in:\n${html}`,
+      )
+      assert.ok(
+        !html.includes('asciidoctor-editor.css'),
+        `expected the VS Code preview stylesheet to be absent in:\n${html}`,
+      )
+    })
+  }
+
   // The `data-shell` fingerprint hashes the document-driven parts of the
   // webview shell (MathJax, syntax highlighter, docinfo, body classes…) that an
   // incremental morph of `#preview-root` cannot update. The preview falls back

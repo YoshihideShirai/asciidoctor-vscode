@@ -20,7 +20,7 @@ You can edit them from the VS Code Settings UI or directly in `settings.json`.
 |`2000`
 
 |`asciidoc.preview.defaultStyle`
-|Built-in stylesheet used when `asciidoc.preview.style` is empty and the document does not set `stylesheet`/`stylesdir`. Possible values: `vscode`, `asciidoctor`, `antora`.
+|Built-in stylesheet used when `asciidoc.preview.style` is empty and the document does not set `stylesheet`/`stylesdir`. Possible values: `vscode`, `asciidoctor`, `antora`, `github-light`, `github-dark`.
 |`vscode`
 
 |`asciidoc.preview.style`
