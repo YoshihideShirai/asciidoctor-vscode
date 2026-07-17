@@ -6,26 +6,26 @@
  */
 
 :root {
-    --github-canvas-default: #0d1117;
-    --github-canvas-subtle: #161b22;
-    --github-canvas-inset: #010409;
-    --github-fg-default: #e6edf3;
-    --github-fg-muted: #7d8590;
-    --github-fg-subtle: #6e7681;
-    --github-border-default: #30363d;
-    --github-border-muted: #21262d;
-    --github-accent-fg: #2f81f7;
-    --github-accent-muted: rgba(56, 139, 253, .4);
-    --github-attention-fg: #d29922;
-    --github-attention-subtle: rgba(187, 128, 9, .15);
-    --github-attention-muted: rgba(187, 128, 9, .4);
-    --github-danger-fg: #f85149;
-    --github-success-fg: #3fb950;
-    --github-done-fg: #a371f7;
-    --github-neutral-muted: rgba(110, 118, 129, .4);
-    --github-prettylights-comment: #8b949e;
-    --github-prettylights-constant: #79c0ff;
-    --github-prettylights-entity: #d2a8ff;
-    --github-prettylights-string: #a5d6ff;
-    --github-prettylights-keyword: #ff7b72;
+  --github-canvas-default: #0d1117;
+  --github-canvas-subtle: #161b22;
+  --github-canvas-inset: #010409;
+  --github-fg-default: #e6edf3;
+  --github-fg-muted: #7d8590;
+  --github-fg-subtle: #6e7681;
+  --github-border-default: #30363d;
+  --github-border-muted: #21262d;
+  --github-accent-fg: #2f81f7;
+  --github-accent-muted: rgba(56, 139, 253, 0.4);
+  --github-attention-fg: #d29922;
+  --github-attention-subtle: rgba(187, 128, 9, 0.15);
+  --github-attention-muted: rgba(187, 128, 9, 0.4);
+  --github-danger-fg: #f85149;
+  --github-success-fg: #3fb950;
+  --github-done-fg: #a371f7;
+  --github-neutral-muted: rgba(110, 118, 129, 0.4);
+  --github-prettylights-comment: #8b949e;
+  --github-prettylights-constant: #79c0ff;
+  --github-prettylights-entity: #d2a8ff;
+  --github-prettylights-string: #a5d6ff;
+  --github-prettylights-keyword: #ff7b72;
 }

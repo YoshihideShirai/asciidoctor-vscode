@@ -7,44 +7,44 @@
  */
 
 body {
-    background: var(--github-canvas-default);
-    color: var(--github-fg-default);
-    font-family: var(
-        --asciidoc-font-family,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans",
-        Helvetica,
-        Arial,
-        sans-serif
-    );
+  background: var(--github-canvas-default);
+  color: var(--github-fg-default);
+  font-family: var(
+    --asciidoc-font-family,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Noto Sans",
+    Helvetica,
+    Arial,
+    sans-serif
+  );
 }
 
 #header,
 #content,
 #footnotes,
 #footer {
-    max-width: 980px;
+  max-width: 980px;
 }
 
 #header,
 #content,
 #footnotes {
-    color: var(--github-fg-default);
+  color: var(--github-fg-default);
 }
 
 a,
 #toc a {
-    color: var(--github-accent-fg);
-    text-decoration: none;
+  color: var(--github-accent-fg);
+  text-decoration: none;
 }
 
 a:hover,
 a:focus,
 #toc a:hover,
 #toc a:focus {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #header > h1:first-child,
@@ -57,55 +57,55 @@ h5,
 h6,
 #toctitle,
 .sidebarblock > .content > .title {
-    color: var(--github-fg-default);
-    font-family: inherit;
-    font-weight: 600;
-    line-height: 1.25;
-    word-spacing: normal;
+  color: var(--github-fg-default);
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.25;
+  word-spacing: normal;
 }
 
 #header > h1:first-child,
 #content > h1:first-child:not([class]),
 h1,
 h2 {
-    border-bottom: 1px solid var(--github-border-muted);
-    padding-bottom: .3em;
+  border-bottom: 1px solid var(--github-border-muted);
+  padding-bottom: 0.3em;
 }
 
 h1,
 #header > h1:first-child,
 #content > h1:first-child:not([class]) {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 h2 {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 h3,
 #toctitle,
 .sidebarblock > .content > .title {
-    font-size: 1.25em;
+  font-size: 1.25em;
 }
 
 h4 {
-    font-size: 1em;
+  font-size: 1em;
 }
 
 h5 {
-    color: var(--github-fg-muted);
-    font-size: .875em;
+  color: var(--github-fg-muted);
+  font-size: 0.875em;
 }
 
 h6 {
-    color: var(--github-fg-muted);
-    font-size: .85em;
+  color: var(--github-fg-muted);
+  font-size: 0.85em;
 }
 
 hr {
-    background-color: var(--github-border-default);
-    border: 0;
-    height: .25em;
+  background-color: var(--github-border-default);
+  border: 0;
+  height: 0.25em;
 }
 
 .subheader,
@@ -127,77 +127,78 @@ table.tableblock > .title,
 .ulist > .title,
 .qlist > .title,
 .hdlist > .title {
-    color: var(--github-fg-muted);
-    font-style: normal;
-    font-weight: 600;
+  color: var(--github-fg-muted);
+  font-style: normal;
+  font-weight: 600;
 }
 
 blockquote,
 .quoteblock,
 .verseblock {
-    background: transparent;
-    border-left: .25em solid var(--github-border-default);
-    color: var(--github-fg-muted);
+  background: transparent;
+  border-left: 0.25em solid var(--github-border-default);
+  color: var(--github-fg-muted);
 }
 
 .quoteblock blockquote,
 .quoteblock p,
 .verseblock pre {
-    color: inherit;
+  color: inherit;
 }
 
 .quoteblock .attribution,
 .verseblock .attribution {
-    color: var(--github-fg-subtle);
+  color: var(--github-fg-subtle);
 }
 
 code,
 kbd,
 pre,
 samp {
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
-        "Liberation Mono", Menlo, monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo,
+    monospace;
 }
 
-:not(pre):not([class^=L]) > code {
-    background-color: var(--github-neutral-muted);
-    border-radius: 6px;
-    color: var(--github-fg-default);
-    font-size: 85%;
-    padding: .2em .4em;
+:not(pre):not([class^="L"]) > code {
+  background-color: var(--github-neutral-muted);
+  border-radius: 6px;
+  color: var(--github-fg-default);
+  font-size: 85%;
+  padding: 0.2em 0.4em;
 }
 
 kbd {
-    background-color: var(--github-canvas-subtle);
-    border: solid 1px var(--github-border-default);
-    border-bottom-color: var(--github-fg-subtle);
-    border-radius: 6px;
-    box-shadow: inset 0 -1px 0 var(--github-fg-subtle);
-    color: var(--github-fg-default);
+  background-color: var(--github-canvas-subtle);
+  border: solid 1px var(--github-border-default);
+  border-bottom-color: var(--github-fg-subtle);
+  border-radius: 6px;
+  box-shadow: inset 0 -1px 0 var(--github-fg-subtle);
+  color: var(--github-fg-default);
 }
 
 .literalblock pre,
 .listingblock > .content > pre:not(.highlight),
-.listingblock > .content > pre[class=highlight],
+.listingblock > .content > pre[class="highlight"],
 .listingblock > .content > pre[class^="highlight "] {
-    background-color: var(--github-canvas-subtle);
-    border: 0;
-    border-radius: 6px;
-    box-shadow: none;
-    color: var(--github-fg-default);
-    font-size: 85%;
-    line-height: 1.45;
+  background-color: var(--github-canvas-subtle);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--github-fg-default);
+  font-size: 85%;
+  line-height: 1.45;
 }
 
 .listingblock .hljs-comment,
 .listingblock .hljs-quote {
-    color: var(--github-prettylights-comment);
+  color: var(--github-prettylights-comment);
 }
 
 .listingblock .hljs-keyword,
 .listingblock .hljs-selector-tag,
 .listingblock .hljs-subst {
-    color: var(--github-prettylights-keyword);
+  color: var(--github-prettylights-keyword);
 }
 
 .listingblock .hljs-literal,
@@ -205,70 +206,70 @@ kbd {
 .listingblock .hljs-tag .hljs-attr,
 .listingblock .hljs-template-variable,
 .listingblock .hljs-variable {
-    color: var(--github-prettylights-constant);
+  color: var(--github-prettylights-constant);
 }
 
 .listingblock .hljs-doctag,
 .listingblock .hljs-string {
-    color: var(--github-prettylights-string);
+  color: var(--github-prettylights-string);
 }
 
 .listingblock .hljs-section,
 .listingblock .hljs-selector-id,
 .listingblock .hljs-title {
-    color: var(--github-prettylights-entity);
+  color: var(--github-prettylights-entity);
 }
 
 .exampleblock > .content,
 .sidebarblock {
-    background-color: var(--github-canvas-subtle);
-    border: 1px solid var(--github-border-default);
-    border-radius: 6px;
-    box-shadow: none;
-    color: var(--github-fg-default);
+  background-color: var(--github-canvas-subtle);
+  border: 1px solid var(--github-border-default);
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--github-fg-default);
 }
 
 .admonitionblock > table td.content {
-    background: var(--github-canvas-subtle);
-    border: 1px solid var(--github-border-default);
-    border-left: 0;
-    color: var(--github-fg-default);
+  background: var(--github-canvas-subtle);
+  border: 1px solid var(--github-border-default);
+  border-left: 0;
+  color: var(--github-fg-default);
 }
 
 .admonitionblock td.icon {
-    background: var(--github-canvas-subtle);
-    border: 1px solid var(--github-border-default);
-    border-right: 0;
-    color: var(--github-accent-fg);
+  background: var(--github-canvas-subtle);
+  border: 1px solid var(--github-border-default);
+  border-right: 0;
+  color: var(--github-accent-fg);
 }
 
 .admonitionblock td.icon .icon-note {
-    color: var(--github-accent-fg);
+  color: var(--github-accent-fg);
 }
 
 .admonitionblock td.icon .icon-tip {
-    color: var(--github-success-fg);
+  color: var(--github-success-fg);
 }
 
 .admonitionblock td.icon .icon-warning {
-    color: var(--github-attention-fg);
+  color: var(--github-attention-fg);
 }
 
 .admonitionblock td.icon .icon-caution {
-    color: var(--github-done-fg);
+  color: var(--github-done-fg);
 }
 
 .admonitionblock td.icon .icon-important {
-    color: var(--github-danger-fg);
+  color: var(--github-danger-fg);
 }
 
 table.tableblock {
-    color: var(--github-fg-default);
+  color: var(--github-fg-default);
 }
 
 table.tableblock,
 table.tableblock > * > tr > * {
-    border-color: var(--github-border-default);
+  border-color: var(--github-border-default);
 }
 
 table.tableblock thead,
@@ -277,24 +278,24 @@ table.stripes-all > tbody > tr,
 table.stripes-even > tbody > tr:nth-of-type(even),
 table.stripes-odd > tbody > tr:nth-of-type(odd),
 table.stripes-hover > tbody > tr:hover {
-    background: var(--github-canvas-subtle);
+  background: var(--github-canvas-subtle);
 }
 
 #toc {
-    background-color: var(--github-canvas-subtle);
-    border-color: var(--github-border-default);
-    border-radius: 6px;
+  background-color: var(--github-canvas-subtle);
+  border-color: var(--github-border-default);
+  border-radius: 6px;
 }
 
 #toc ul {
-    color: var(--github-fg-muted);
+  color: var(--github-fg-muted);
 }
 
 #footnotes {
-    color: var(--github-fg-muted);
+  color: var(--github-fg-muted);
 }
 
 #footer {
-    background-color: var(--github-canvas-default);
-    color: var(--github-fg-muted);
+  background-color: var(--github-canvas-default);
+  color: var(--github-fg-muted);
 }
