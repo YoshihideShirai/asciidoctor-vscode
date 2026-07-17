@@ -1,7 +1,12 @@
 import * as vscode from 'vscode'
 import { getWorkspaceFolder } from '../../core/workspace.js'
 
-export type AsciidocPreviewDefaultStyle = 'vscode' | 'asciidoctor' | 'antora'
+export type AsciidocPreviewDefaultStyle =
+  | 'vscode'
+  | 'asciidoctor'
+  | 'antora'
+  | 'github-light'
+  | 'github-dark'
 
 export class AsciidocPreviewConfiguration {
   public static getForResource(resource: vscode.Uri) {
@@ -115,7 +120,9 @@ export class AsciidocPreviewConfiguration {
     if (
       defaultStyle === 'vscode' ||
       defaultStyle === 'asciidoctor' ||
-      defaultStyle === 'antora'
+      defaultStyle === 'antora' ||
+      defaultStyle === 'github-light' ||
+      defaultStyle === 'github-dark'
     ) {
       const hasExplicitDefaultStyle =
         configuredDefaultStyle?.workspaceFolderValue !== undefined ||
