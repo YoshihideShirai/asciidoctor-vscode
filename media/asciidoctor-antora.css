@@ -77,13 +77,21 @@
   --antora-note: #217ee7;
   --antora-tip: #41af46;
   --antora-warning: #e18114;
+  --antora-caution-on-color: var(--antora-white);
+  --antora-important-on-color: var(--antora-white);
+  --antora-note-on-color: var(--antora-white);
+  --antora-tip-on-color: var(--antora-white);
+  --antora-warning-on-color: var(--antora-white);
   --antora-body-font: "Roboto", sans-serif;
   --antora-monospace-font: "Roboto Mono", monospace;
+  --antora-rem-base: 18;
   --antora-font-weight-bold: 600;
   --antora-doc-line-height: 1.6;
   --antora-doc-max-width: 46rem;
   --antora-panel-background: var(--antora-smoke-30);
   --antora-panel-border: var(--antora-smoke-90);
+  --antora-admonition-background: var(--antora-panel-background);
+  --antora-admonition-label-font-weight: var(--antora-font-weight-bold);
 }
 
 body {
@@ -285,65 +293,83 @@ kbd {
 }
 
 .admonitionblock > table td.content {
-  background: var(--antora-panel-background);
+  background: var(--antora-admonition-background);
   border: 0;
   color: var(--antora-jet-50);
-  font-size: 0.95rem;
+  font-size: calc(16 / var(--antora-rem-base) * 1rem);
   padding: 1rem 1rem 0.75rem;
   width: 100%;
+  word-wrap: anywhere;
 }
 
-.admonitionblock td.icon {
-  font-size: 0.9rem;
+.admonitionblock > table td.icon {
+  border: 0;
+  font-size: calc(15 / var(--antora-rem-base) * 1rem);
   left: 0;
   line-height: 1;
   padding: 0;
   position: absolute;
+  text-align: left;
   top: 0;
   transform: translate(-0.5rem, -50%);
+  width: auto;
 }
 
-.admonitionblock td.icon [class^="fa icon-"] {
+.admonitionblock > table td.icon i[class*=" icon-"],
+.admonitionblock > table td.icon .title {
   align-items: center;
   border-radius: 0.45rem;
   color: var(--antora-white);
   display: inline-flex;
   filter: none;
   font-family: var(--antora-body-font);
-  font-weight: var(--antora-font-weight-bold);
+  font-size: inherit;
+  font-style: normal;
+  font-weight: var(--antora-admonition-label-font-weight);
   height: 1.25rem;
   min-width: 0;
   padding: 0 0.5rem;
   text-transform: uppercase;
+  vertical-align: initial;
   width: fit-content;
 }
 
-.admonitionblock td.icon [class^="fa icon-"]::before {
+.admonitionblock > table td.icon i[class*=" icon-"]::before {
   content: none;
 }
 
-.admonitionblock td.icon [class^="fa icon-"]::after {
+.admonitionblock > table td.icon i[class*=" icon-"]::after {
   content: attr(title);
 }
 
-.admonitionblock td.icon .icon-note {
+.admonitionblock > table td.icon .icon-note,
+.admonitionblock.note > table td.icon .title {
   background-color: var(--antora-note);
+  color: var(--antora-note-on-color);
 }
 
-.admonitionblock td.icon .icon-tip {
+.admonitionblock > table td.icon .icon-tip,
+.admonitionblock.tip > table td.icon .title {
   background-color: var(--antora-tip);
+  color: var(--antora-tip-on-color);
 }
 
-.admonitionblock td.icon .icon-warning {
+.admonitionblock > table td.icon .icon-warning,
+.admonitionblock.warning > table td.icon .title {
   background-color: var(--antora-warning);
+  color: var(--antora-warning-on-color);
 }
 
-.admonitionblock td.icon .icon-caution {
+.admonitionblock > table td.icon .icon-caution,
+.admonitionblock.caution > table td.icon .title {
   background-color: var(--antora-caution);
+  color: var(--antora-caution-on-color);
 }
 
-.admonitionblock td.icon .icon-important {
+.admonitionblock > table td.icon .icon-important,
+.admonitionblock.important > table td.icon .title {
   background-color: var(--antora-important);
+  color: var(--antora-important-on-color);
 }
 
 table.tableblock {
