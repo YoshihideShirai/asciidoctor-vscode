@@ -556,8 +556,10 @@ See xref:my-table[xrefstyle=short] for more reference.
     if (defaultStyle !== undefined) {
       const testConfig = config as unknown as {
         defaultStyle: AsciidocPreviewDefaultStyle
+        defaultStyleExplicit: boolean
       }
       testConfig.defaultStyle = defaultStyle
+      testConfig.defaultStyleExplicit = true
     }
     const converter = new AsciidoctorWebViewConverter(
       file,
@@ -806,6 +808,31 @@ See xref:my-table[xrefstyle=short] for more reference.
       !html.includes('asciidoctor-editor.css'),
       `expected the VS Code preview stylesheet to be absent in:\n${html}`,
     )
+  })
+
+  test('Should auto-select the Antora-inspired stylesheet when the deprecated useEditorStyle is false and Antora support is active', async () => {
+    // Neither value of the legacy useEditorStyle boolean expresses an
+    // opinion about Antora, so it must not block auto-detection the way an
+    // explicit `defaultStyle` would (see the previous test).
+    await vscode.workspace
+      .getConfiguration('asciidoc', null)
+      .update('preview.useEditorStyle', false)
+    try {
+      const html = await convertStandaloneWithFragment(
+        '= Title\n\nSome content',
+        undefined,
+        undefined,
+        createAntoraDocumentContextStub(undefined),
+      )
+      assert.ok(
+        html.includes('asciidoctor-antora.css'),
+        `expected the Antora stylesheet to be auto-selected in:\n${html}`,
+      )
+    } finally {
+      await vscode.workspace
+        .getConfiguration('asciidoc', null)
+        .update('preview.useEditorStyle', undefined)
+    }
   })
 
   test('Should keep an explicitly selected stylesheet even when Antora support is active', async () => {

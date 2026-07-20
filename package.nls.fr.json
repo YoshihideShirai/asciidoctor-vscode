@@ -60,6 +60,8 @@
   "asciidoc.preview.scrollEditorWithPreview.desc": "Quand on fait défiler la prévisualisation, synchronise l'éditeur afin d'être sur la même ligne.",
   "asciidoc.preview.scrollPreviewWithEditor.desc": "Quand on fait défiler l'éditeur, synchronise la prévisualisation afin d'être au même niveau.",
   "asciidoc.preview.defaultStyle.desc": "Contrôle la feuille de style intégrée utilisée quand `#asciidoc.preview.style#` est vide et que le document ne définit pas `stylesheet`/`stylesdir`.",
+  "asciidoc.preview.defaultStyle.auto.label": "Automatique",
+  "asciidoc.preview.defaultStyle.auto.desc": "Suit le paramètre déprécié `#asciidoc.preview.useEditorStyle#` (`vscode`, sauf s'il est à `false`, auquel cas `asciidoctor`), et bascule automatiquement sur `antora` quand le support Antora est actif.",
   "asciidoc.preview.defaultStyle.vscode.desc": "Utilise la feuille de style de prévisualisation intégrée au thème VS Code.",
   "asciidoc.preview.defaultStyle.asciidoctor.desc": "Utilise la feuille de style par défaut d'Asciidoctor.js.",
   "asciidoc.preview.defaultStyle.antora.desc": "Utilise une feuille de style inspirée d’Antora qui superpose les polices, couleurs et styles de blocs de document d’Antora Default UI à la feuille de style par défaut d’Asciidoctor.",

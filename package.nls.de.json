@@ -60,6 +60,8 @@
   "asciidoc.preview.scrollEditorWithPreview.desc": "Scrollen in der Vorschau aktualisiert die Zeigerposition im Editor.",
   "asciidoc.preview.scrollPreviewWithEditor.desc": "Scrollen im Editor aktualisiert die Zeilenposition in der Vorschau.",
   "asciidoc.preview.defaultStyle.desc": "Steuert, welches integrierte Stylesheet verwendet wird, wenn `#asciidoc.preview.style#` leer ist und das Dokument keine `stylesheet`/`stylesdir`-Attribute setzt.",
+  "asciidoc.preview.defaultStyle.auto.label": "Automatisch",
+  "asciidoc.preview.defaultStyle.auto.desc": "Folgt der veralteten Einstellung `#asciidoc.preview.useEditorStyle#` (`vscode`, außer sie ist auf `false` gesetzt, dann `asciidoctor`), und wechselt automatisch zu `antora`, wenn die Antora-Unterstützung aktiv ist.",
   "asciidoc.preview.defaultStyle.vscode.desc": "Verwendet das in das VS-Code-Theme integrierte Vorschau-Stylesheet.",
   "asciidoc.preview.defaultStyle.asciidoctor.desc": "Verwendet das standardmäßige Asciidoctor.js-Stylesheet.",
   "asciidoc.preview.defaultStyle.antora.desc": "Verwendet ein an Antora angelehntes Stylesheet, das Schriften, Farben und Dokumentblock-Stile der Antora Default UI über das Asciidoctor-Standard-Stylesheet legt.",

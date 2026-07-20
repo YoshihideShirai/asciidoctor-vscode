@@ -428,18 +428,27 @@
           "asciidoc.preview.defaultStyle": {
             "type": "string",
             "enum": [
+              "",
+              "vscode",
+              "asciidoctor",
+              "antora",
+              "github"
+            ],
+            "enumItemLabels": [
+              "%asciidoc.preview.defaultStyle.auto.label%",
               "vscode",
               "asciidoctor",
               "antora",
               "github"
             ],
             "enumDescriptions": [
+              "%asciidoc.preview.defaultStyle.auto.desc%",
               "%asciidoc.preview.defaultStyle.vscode.desc%",
               "%asciidoc.preview.defaultStyle.asciidoctor.desc%",
               "%asciidoc.preview.defaultStyle.antora.desc%",
               "%asciidoc.preview.defaultStyle.github.desc%"
             ],
-            "default": "vscode",
+            "default": "",
             "markdownDescription": "%asciidoc.preview.defaultStyle.desc%",
             "order": 4,
             "scope": "resource"

@@ -41,6 +41,14 @@ export class AsciidocPreviewConfiguration {
   public readonly additionalStyles: string[]
   public readonly refreshInterval: number
   public readonly defaultStyle: AsciidocPreviewDefaultStyle
+  // Whether `defaultStyle` came from an explicit `preview.defaultStyle`
+  // setting, as opposed to falling back to the deprecated
+  // `preview.useEditorStyle` boolean. Antora auto-detection (see
+  // AsciidoctorWebViewConverter.resolveEffectiveDefaultStyle) only kicks in
+  // when this is false: an explicit choice — including an explicit
+  // `vscode` — always wins, but neither value of the legacy boolean should
+  // block auto-detection, since neither expresses an opinion about Antora.
+  public readonly defaultStyleExplicit: boolean
   public readonly previewStyle: string
   public readonly previewTemplates: string[]
 
@@ -103,7 +111,9 @@ export class AsciidocPreviewConfiguration {
       'preview.additionalStyles',
       [],
     )
-    this.defaultStyle = this.getDefaultStyle(asciidocConfig)
+    const defaultStyleResolution = this.resolveDefaultStyle(asciidocConfig)
+    this.defaultStyle = defaultStyleResolution.style
+    this.defaultStyleExplicit = defaultStyleResolution.explicit
     this.previewStyle = asciidocConfig.get<string>('preview.style', '')
     this.previewTemplates = asciidocConfig.get<string[]>(
       'preview.templates',
@@ -115,46 +125,29 @@ export class AsciidocPreviewConfiguration {
     )
   }
 
-  private getDefaultStyle(
-    asciidocConfig: vscode.WorkspaceConfiguration,
-  ): AsciidocPreviewDefaultStyle {
-    const configuredDefaultStyle = asciidocConfig.inspect<string>(
-      'preview.defaultStyle',
-    )
-    if (this.hasExplicitValue(configuredDefaultStyle)) {
-      const defaultStyle = asciidocConfig.get<string>(
-        'preview.defaultStyle',
-        'vscode',
-      )
-      if (isAsciidocPreviewDefaultStyle(defaultStyle)) {
-        return defaultStyle
-      }
+  // The schema default for `preview.defaultStyle` is `''` ("Automatic"),
+  // distinct from every real style value (including 'vscode', which is also
+  // the *effective* default via the legacy fallback below). That distinction
+  // matters in the Settings UI: if 'vscode' were both the schema default and
+  // a selectable value, a dropdown already showing 'vscode' as the inherited
+  // default may not register a "change" — and so not persist anything — when
+  // the user picks the identical-looking 'vscode' entry on purpose. With a
+  // dedicated empty default, picking any real style is always a change from
+  // what was already displayed.
+  private resolveDefaultStyle(asciidocConfig: vscode.WorkspaceConfiguration): {
+    style: AsciidocPreviewDefaultStyle
+    explicit: boolean
+  } {
+    const defaultStyle = asciidocConfig.get<string>('preview.defaultStyle', '')
+    if (isAsciidocPreviewDefaultStyle(defaultStyle)) {
+      return { style: defaultStyle, explicit: true }
     }
 
     const useEditorStyle = asciidocConfig.get<boolean>(
       'preview.useEditorStyle',
       true,
     )
-    return useEditorStyle ? 'vscode' : 'asciidoctor'
-  }
-
-  // `inspect()` is the only way to tell whether a setting was explicitly
-  // configured, since `get()` always resolves to the schema default
-  // otherwise.
-  private hasExplicitValue<T>(
-    inspected:
-      | {
-          workspaceFolderValue?: T
-          workspaceValue?: T
-          globalValue?: T
-        }
-      | undefined,
-  ): boolean {
-    return (
-      inspected?.workspaceFolderValue !== undefined ||
-      inspected?.workspaceValue !== undefined ||
-      inspected?.globalValue !== undefined
-    )
+    return { style: useEditorStyle ? 'vscode' : 'asciidoctor', explicit: false }
   }
 
   public isEqualTo(otherConfig: AsciidocPreviewConfiguration) {
