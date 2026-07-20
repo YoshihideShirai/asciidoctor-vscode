@@ -110,39 +110,46 @@ export class AsciidocPreviewConfiguration {
       asciidocConfig.inspect<AsciidocPreviewDefaultStyle>(
         'preview.defaultStyle',
       )
-    const defaultStyle =
-      configuredDefaultStyle?.workspaceFolderValue ??
-      configuredDefaultStyle?.workspaceValue ??
-      configuredDefaultStyle?.globalValue ??
-      configuredDefaultStyle?.defaultValue ??
-      'vscode'
-
-    if (
-      defaultStyle === 'vscode' ||
-      defaultStyle === 'asciidoctor' ||
-      defaultStyle === 'antora' ||
-      defaultStyle === 'github-light' ||
-      defaultStyle === 'github-dark'
-    ) {
-      const hasExplicitDefaultStyle =
-        configuredDefaultStyle?.workspaceFolderValue !== undefined ||
-        configuredDefaultStyle?.workspaceValue !== undefined ||
-        configuredDefaultStyle?.globalValue !== undefined
-      if (hasExplicitDefaultStyle) {
+    if (this.hasExplicitValue(configuredDefaultStyle)) {
+      const defaultStyle = asciidocConfig.get<AsciidocPreviewDefaultStyle>(
+        'preview.defaultStyle',
+        'vscode',
+      )
+      if (
+        defaultStyle === 'vscode' ||
+        defaultStyle === 'asciidoctor' ||
+        defaultStyle === 'antora' ||
+        defaultStyle === 'github-light' ||
+        defaultStyle === 'github-dark'
+      ) {
         return defaultStyle
       }
     }
 
-    const configuredUseEditorStyle = asciidocConfig.inspect<boolean>(
+    const useEditorStyle = asciidocConfig.get<boolean>(
       'preview.useEditorStyle',
+      true,
     )
-    const useEditorStyle =
-      configuredUseEditorStyle?.workspaceFolderValue ??
-      configuredUseEditorStyle?.workspaceValue ??
-      configuredUseEditorStyle?.globalValue ??
-      configuredUseEditorStyle?.defaultValue ??
-      true
     return useEditorStyle ? 'vscode' : 'asciidoctor'
+  }
+
+  // `inspect()` is the only way to tell whether a setting was explicitly
+  // configured, since `get()` always resolves to the schema default
+  // otherwise.
+  private hasExplicitValue<T>(
+    inspected:
+      | {
+          workspaceFolderValue?: T
+          workspaceValue?: T
+          globalValue?: T
+        }
+      | undefined,
+  ): boolean {
+    return (
+      inspected?.workspaceFolderValue !== undefined ||
+      inspected?.workspaceValue !== undefined ||
+      inspected?.globalValue !== undefined
+    )
   }
 
   public isEqualTo(otherConfig: AsciidocPreviewConfiguration) {
