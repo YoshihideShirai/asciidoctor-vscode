@@ -14,6 +14,11 @@
   --github-canvas-default: #fff;
   --github-canvas-subtle: #f6f8fa;
   --github-canvas-inset: #f6f8fa;
+  /* A plain (non-syntax-highlighted) code block — `.literalblock`, or a
+   * `.listingblock` with no `source-highlighter` — sits on this token
+   * instead of `--github-canvas-subtle`: GitHub's own dark theme gives it a
+   * subtly different shade (`#151b23`) from a highlighted block's canvas. */
+  --github-canvas-code: #f6f8fa;
   --github-fg-default: #1f2328;
   --github-fg-muted: #59636e;
   --github-fg-subtle: #818b98;
@@ -40,6 +45,7 @@ body.vscode-high-contrast {
   --github-canvas-default: #0d1117;
   --github-canvas-subtle: #161b22;
   --github-canvas-inset: #010409;
+  --github-canvas-code: #151b23;
   --github-fg-default: #e6edf3;
   --github-fg-muted: #7d8590;
   --github-fg-subtle: #6e7681;
