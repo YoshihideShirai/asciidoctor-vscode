@@ -812,12 +812,12 @@ See xref:my-table[xrefstyle=short] for more reference.
     const html = await convertStandaloneWithFragment(
       '= Title\n\nSome content',
       undefined,
-      'github-dark',
+      'github',
       createAntoraDocumentContextStub(undefined),
     )
     assert.ok(
-      html.includes('asciidoctor-github-dark.css'),
-      `expected the explicitly selected github-dark stylesheet in:\n${html}`,
+      html.includes('asciidoctor-github-colors.css'),
+      `expected the explicitly selected github stylesheet in:\n${html}`,
     )
     assert.ok(
       !html.includes('asciidoctor-antora.css'),
@@ -829,43 +829,38 @@ See xref:my-table[xrefstyle=short] for more reference.
     const html = await convertStandaloneWithFragment(
       '= Title\n\nSome content',
       undefined,
-      'github-dark',
+      'github',
     )
     assert.ok(
-      html.includes('data-preview-style="github-dark"'),
+      html.includes('data-preview-style="github"'),
       `expected the resolved preview style on <body> in:\n${html}`,
     )
   })
 
-  for (const [defaultStyle, themeStylesheet] of [
-    ['github-light', 'asciidoctor-github-light.css'],
-    ['github-dark', 'asciidoctor-github-dark.css'],
-  ] as const) {
-    test(`Should use the ${defaultStyle} stylesheet when selected`, async () => {
-      const html = await convertStandaloneWithFragment(
-        '= Title\n\nSome content',
-        undefined,
-        defaultStyle,
-      )
-      assert.ok(
-        html.includes('asciidoctor-default.css') &&
-          html.includes(themeStylesheet) &&
-          html.includes('asciidoctor-github.css'),
-        `expected the Asciidoctor default base, GitHub theme, and GitHub stylesheet in:\n${html}`,
-      )
-      assert.ok(
-        html.indexOf('asciidoctor-default.css') <
-          html.indexOf(themeStylesheet) &&
-          html.indexOf(themeStylesheet) <
-            html.indexOf('asciidoctor-github.css'),
-        `expected the GitHub stylesheets to be layered after the default base in:\n${html}`,
-      )
-      assert.ok(
-        !html.includes('asciidoctor-editor.css'),
-        `expected the VS Code preview stylesheet to be absent in:\n${html}`,
-      )
-    })
-  }
+  test('Should use the github stylesheet when selected', async () => {
+    const html = await convertStandaloneWithFragment(
+      '= Title\n\nSome content',
+      undefined,
+      'github',
+    )
+    assert.ok(
+      html.includes('asciidoctor-default.css') &&
+        html.includes('asciidoctor-github-colors.css') &&
+        html.includes('asciidoctor-github.css'),
+      `expected the Asciidoctor default base, GitHub color tokens, and GitHub stylesheet in:\n${html}`,
+    )
+    assert.ok(
+      html.indexOf('asciidoctor-default.css') <
+        html.indexOf('asciidoctor-github-colors.css') &&
+        html.indexOf('asciidoctor-github-colors.css') <
+          html.indexOf('asciidoctor-github.css'),
+      `expected the GitHub stylesheets to be layered after the default base in:\n${html}`,
+    )
+    assert.ok(
+      !html.includes('asciidoctor-editor.css'),
+      `expected the VS Code preview stylesheet to be absent in:\n${html}`,
+    )
+  })
 
   // The `data-shell` fingerprint hashes the document-driven parts of the
   // webview shell (MathJax, syntax highlighter, docinfo, body classes…) that an

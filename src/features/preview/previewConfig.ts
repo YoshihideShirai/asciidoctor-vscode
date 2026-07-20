@@ -10,8 +10,7 @@ const ASCIIDOC_PREVIEW_DEFAULT_STYLES = [
   'vscode',
   'asciidoctor',
   'antora',
-  'github-light',
-  'github-dark',
+  'github',
 ] as const
 
 export type AsciidocPreviewDefaultStyle =

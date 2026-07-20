@@ -1,8 +1,8 @@
 /*
  * GitHub-style preview layer.
  *
- * This stylesheet is loaded after `asciidoctor-default.css` and after one of
- * the GitHub color-mode token files. It adapts the Asciidoctor preview DOM to a
+ * This stylesheet is loaded after `asciidoctor-default.css` and
+ * `asciidoctor-github-colors.css`. It adapts the Asciidoctor preview DOM to a
  * GitHub Markdown-like presentation while keeping the preview self-contained.
  */
 
@@ -233,18 +233,48 @@ kbd {
   color: var(--github-fg-default);
 }
 
+/*
+ * GitHub's native Alert callouts (`> [!NOTE]`, etc.) are a left border plus a
+ * bold colored icon+title line, with no filled background — unlike
+ * Asciidoctor's own boxed admonition table cells. The DOM here is still
+ * Asciidoctor's icon/content table layout, so this approximates the Alert
+ * look within it: a colored left border on the table, and transparent,
+ * unboxed icon/content cells.
+ */
+.admonitionblock > table {
+  border-left: 0.25em solid var(--github-border-default);
+}
+
 .admonitionblock > table td.content {
-  background: var(--github-canvas-subtle);
-  border: 1px solid var(--github-border-default);
-  border-left: 0;
+  background: transparent;
+  border: 0;
   color: var(--github-fg-default);
 }
 
 .admonitionblock td.icon {
-  background: var(--github-canvas-subtle);
-  border: 1px solid var(--github-border-default);
-  border-right: 0;
-  color: var(--github-accent-fg);
+  background: transparent;
+  border: 0;
+}
+
+/* Same five types GitHub Alerts use, with matching colors. */
+.admonitionblock.note > table {
+  border-left-color: var(--github-accent-fg);
+}
+
+.admonitionblock.tip > table {
+  border-left-color: var(--github-success-fg);
+}
+
+.admonitionblock.important > table {
+  border-left-color: var(--github-done-fg);
+}
+
+.admonitionblock.warning > table {
+  border-left-color: var(--github-attention-fg);
+}
+
+.admonitionblock.caution > table {
+  border-left-color: var(--github-danger-fg);
 }
 
 .admonitionblock td.icon .icon-note {
@@ -255,15 +285,15 @@ kbd {
   color: var(--github-success-fg);
 }
 
+.admonitionblock td.icon .icon-important {
+  color: var(--github-done-fg);
+}
+
 .admonitionblock td.icon .icon-warning {
   color: var(--github-attention-fg);
 }
 
 .admonitionblock td.icon .icon-caution {
-  color: var(--github-done-fg);
-}
-
-.admonitionblock td.icon .icon-important {
   color: var(--github-danger-fg);
 }
 

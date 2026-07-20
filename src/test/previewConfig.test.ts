@@ -33,9 +33,9 @@ describe('asciidoc.preview.defaultStyle resolution', () => {
     createdFiles.push(file)
     await vscode.workspace
       .getConfiguration('asciidoc', null)
-      .update('preview.defaultStyle', 'github-dark')
+      .update('preview.defaultStyle', 'github')
     const config = AsciidocPreviewConfiguration.getForResource(file)
-    assert.equal(config.defaultStyle, 'github-dark')
+    assert.equal(config.defaultStyle, 'github')
   })
 
   test('falls back to the deprecated preview.useEditorStyle when defaultStyle is unset', async () => {

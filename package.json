@@ -431,15 +431,13 @@
               "vscode",
               "asciidoctor",
               "antora",
-              "github-light",
-              "github-dark"
+              "github"
             ],
             "enumDescriptions": [
               "%asciidoc.preview.defaultStyle.vscode.desc%",
               "%asciidoc.preview.defaultStyle.asciidoctor.desc%",
               "%asciidoc.preview.defaultStyle.antora.desc%",
-              "%asciidoc.preview.defaultStyle.githubLight.desc%",
-              "%asciidoc.preview.defaultStyle.githubDark.desc%"
+              "%asciidoc.preview.defaultStyle.github.desc%"
             ],
             "default": "vscode",
             "markdownDescription": "%asciidoc.preview.defaultStyle.desc%",
