@@ -137,7 +137,6 @@ h1,
 h2,
 h3,
 #toctitle,
-.sidebarblock > .content > .title,
 h4,
 h5,
 h6 {
@@ -168,13 +167,22 @@ h4 {
 }
 
 h3,
-#toctitle,
-.sidebarblock > .content > .title {
+#toctitle {
   font-size: 1.45rem;
 }
 
 h4 {
   font-size: 1.2rem;
+}
+
+.sidebarblock > .content > .title {
+  color: var(--antora-jet-80);
+  font-family: var(--asciidoc-font-family, var(--antora-body-font));
+  font-size: 1.25rem;
+  font-weight: var(--antora-font-weight-bold);
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .paragraph.lead > p,
@@ -183,28 +191,42 @@ h4 {
   font-size: 1.08rem;
 }
 
-.subheader,
 .admonitionblock td.content > .title,
-.audioblock > .title,
 .exampleblock > .title,
 .imageblock > .title,
-.listingblock > .title,
 .literalblock > .title,
-.stemblock > .title,
+.listingblock > .title,
 .openblock > .title,
-.paragraph > .title,
-.quoteblock > .title,
-table.tableblock > .title,
-.verseblock > .title,
 .videoblock > .title,
-.dlist > .title,
-.olist > .title,
-.ulist > .title,
-.qlist > .title,
-.hdlist > .title {
+table.tableblock > .title {
   color: var(--antora-gray-70);
+  font-family: var(--asciidoc-font-family, var(--antora-body-font));
   font-style: italic;
   font-weight: var(--antora-font-weight-bold);
+}
+
+.olist > .title,
+.ulist > .title {
+  color: inherit;
+  font-family: var(--asciidoc-font-family, var(--antora-body-font));
+  font-style: italic;
+  font-weight: var(--antora-font-weight-bold);
+}
+
+/* Antora's own UI never styles these captions (no title convention for
+ * them), so they should read as plain doc text. Without this,
+ * asciidoctor-default.css's `color: #7a2518` (its own caption color) leaks
+ * through underneath. */
+.subheader,
+.paragraph > .title,
+.quoteblock > .title,
+.verseblock > .title,
+.dlist > .title,
+.qlist > .title,
+.hdlist > .title,
+.stemblock > .title,
+.audioblock > .title {
+  color: inherit;
 }
 
 code,
@@ -226,20 +248,42 @@ kbd {
   background: var(--antora-panel-background);
   border: 1px solid var(--antora-gray-10);
   border-radius: 0.25em;
-  box-shadow: none;
+  box-shadow:
+    0 1px 0 var(--antora-gray-10),
+    0 0 0 0.1em var(--antora-white) inset;
 }
 
+/* Every code block — plain (`.literalblock`, or a `.listingblock` with no
+ * `source-highlighter`) or syntax-highlighted (`pre.highlightjs`) — gets the
+ * same background/border treatment. The highlight.js output is
+ * `<pre class="highlightjs highlight">`: neither `[class="highlight"]` nor
+ * `[class^="highlight "]` matches that (it's a two-token class list, not a
+ * `"highlight "`-prefixed string), so this uses a real class selector
+ * (`pre.highlight`) instead. */
 .literalblock pre,
 .listingblock > .content > pre:not(.highlight),
-.listingblock > .content > pre[class="highlight"],
-.listingblock > .content > pre[class^="highlight "] {
+.listingblock > .content > pre.highlight {
   background: var(--antora-panel-background);
-  border: 1px solid var(--antora-panel-border);
+  border: 0;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: inset 0 0 1.75px var(--antora-panel-border);
   color: var(--antora-jet-70);
   font-size: 0.95rem;
   line-height: 1.5;
+  padding: 0.875em;
+}
+
+/* The `background` above paints the `<pre>`, but a highlight.js theme
+ * (media/highlightjs/styles/*.css) sets its own background directly on the
+ * `<code class="hljs">` child, which visually sits on top of it (and, for a
+ * dark theme, clashes hard with Antora's all-light design). Override the
+ * `<code>` itself. It also carries its own `padding` (`pre code.hljs`), which
+ * stacks on top of the `<pre>`'s own padding above and makes a highlighted
+ * block noticeably roomier than a plain one; drop it so the `<pre>`'s padding
+ * is the only padding. */
+.listingblock pre.highlightjs > code {
+  background: var(--antora-panel-background);
+  padding: 0;
 }
 
 .exampleblock > .content {
@@ -247,12 +291,14 @@ kbd {
   border: 0.25rem solid var(--antora-gray-70);
   border-radius: 0.5rem;
   box-shadow: none;
+  padding: 0.75rem;
 }
 
 .sidebarblock {
   background: var(--antora-smoke-90);
   border: 0;
   border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
 }
 
 #preamble .abstract blockquote,
@@ -277,6 +323,11 @@ kbd {
   color: inherit;
 }
 
+.verseblock pre {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
 .quoteblock blockquote::before {
   content: none;
 }
@@ -284,6 +335,7 @@ kbd {
 .quoteblock .attribution,
 .verseblock .attribution {
   color: var(--antora-gray-40);
+  text-align: left;
 }
 
 .admonitionblock {
@@ -300,10 +352,14 @@ kbd {
   background: var(--antora-admonition-background);
   border: 0;
   color: var(--antora-jet-50);
-  font-size: calc(16 / var(--antora-rem-base) * 1rem);
   padding: 1rem 1rem 0.75rem;
   width: 100%;
   word-wrap: anywhere;
+}
+
+.admonitionblock > table td.content,
+.admonitionblock > table td.content p {
+  font-size: calc(16 / var(--antora-rem-base) * 1rem);
 }
 
 .admonitionblock > table td.icon {
@@ -439,6 +495,14 @@ table.tableblock > tfoot {
   vertical-align: middle;
 }
 
+.dlist dt {
+  font-style: italic;
+}
+
+.conum[data-value] {
+  font-family: var(--asciidoc-font-family, var(--antora-body-font));
+}
+
 #toc {
   border-color: var(--antora-panel-border);
 }
@@ -450,6 +514,7 @@ table.tableblock > tfoot {
 }
 
 #toc ul {
+  font-family: var(--asciidoc-font-family, var(--antora-body-font));
   line-height: 1.2;
 }
 
