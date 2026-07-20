@@ -27,7 +27,6 @@ export class AsciidocPreviewConfiguration {
   public readonly additionalStyles: string[]
   public readonly refreshInterval: number
   public readonly defaultStyle: AsciidocPreviewDefaultStyle
-  public readonly useEditorStylesheet: boolean
   public readonly previewStyle: string
   public readonly previewTemplates: string[]
 
@@ -91,7 +90,6 @@ export class AsciidocPreviewConfiguration {
       [],
     )
     this.defaultStyle = this.getDefaultStyle(asciidocConfig)
-    this.useEditorStylesheet = this.defaultStyle === 'vscode'
     this.previewStyle = asciidocConfig.get<string>('preview.style', '')
     this.previewTemplates = asciidocConfig.get<string[]>(
       'preview.templates',

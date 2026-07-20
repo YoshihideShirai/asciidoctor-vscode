@@ -86,7 +86,7 @@
   --antora-monospace-font: "Roboto Mono", monospace;
   --antora-rem-base: 18;
   --antora-font-weight-bold: 600;
-  --antora-doc-line-height: 1.6;
+  --antora-doc-line-height: var(--asciidoc-line-height, 1.6);
   --antora-doc-max-width: 46rem;
   --antora-panel-background: var(--antora-smoke-30);
   --antora-panel-border: var(--antora-smoke-90);
