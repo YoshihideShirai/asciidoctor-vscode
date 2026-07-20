@@ -1,12 +1,27 @@
 import * as vscode from 'vscode'
 import { getWorkspaceFolder } from '../../core/workspace.js'
 
+// Single source of truth for the valid `asciidoc.preview.defaultStyle`
+// values (must match the enum in package.json): the type is derived from
+// this array instead of duplicated, so validating an untrusted runtime
+// value (e.g. a hand-edited settings.json) only requires checking
+// membership here, with no separate list to keep in sync.
+const ASCIIDOC_PREVIEW_DEFAULT_STYLES = [
+  'vscode',
+  'asciidoctor',
+  'antora',
+  'github-light',
+  'github-dark',
+] as const
+
 export type AsciidocPreviewDefaultStyle =
-  | 'vscode'
-  | 'asciidoctor'
-  | 'antora'
-  | 'github-light'
-  | 'github-dark'
+  (typeof ASCIIDOC_PREVIEW_DEFAULT_STYLES)[number]
+
+function isAsciidocPreviewDefaultStyle(
+  value: string,
+): value is AsciidocPreviewDefaultStyle {
+  return (ASCIIDOC_PREVIEW_DEFAULT_STYLES as readonly string[]).includes(value)
+}
 
 export class AsciidocPreviewConfiguration {
   public static getForResource(resource: vscode.Uri) {
@@ -104,22 +119,15 @@ export class AsciidocPreviewConfiguration {
   private getDefaultStyle(
     asciidocConfig: vscode.WorkspaceConfiguration,
   ): AsciidocPreviewDefaultStyle {
-    const configuredDefaultStyle =
-      asciidocConfig.inspect<AsciidocPreviewDefaultStyle>(
-        'preview.defaultStyle',
-      )
+    const configuredDefaultStyle = asciidocConfig.inspect<string>(
+      'preview.defaultStyle',
+    )
     if (this.hasExplicitValue(configuredDefaultStyle)) {
-      const defaultStyle = asciidocConfig.get<AsciidocPreviewDefaultStyle>(
+      const defaultStyle = asciidocConfig.get<string>(
         'preview.defaultStyle',
         'vscode',
       )
-      if (
-        defaultStyle === 'vscode' ||
-        defaultStyle === 'asciidoctor' ||
-        defaultStyle === 'antora' ||
-        defaultStyle === 'github-light' ||
-        defaultStyle === 'github-dark'
-      ) {
+      if (isAsciidocPreviewDefaultStyle(defaultStyle)) {
         return defaultStyle
       }
     }
