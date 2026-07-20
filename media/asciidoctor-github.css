@@ -146,6 +146,10 @@ blockquote,
   color: inherit;
 }
 
+.quoteblock blockquote::before {
+  content: none;
+}
+
 .quoteblock .attribution,
 .verseblock .attribution {
   color: var(--github-fg-subtle);
@@ -264,6 +268,18 @@ kbd {
 }
 
 table.tableblock {
+  background-color: var(--github-canvas-default);
+  color: var(--github-fg-default);
+}
+
+/*
+ * `table tr th, table tr td { color: rgba(0, 0, 0, .8) }` in
+ * asciidoctor-default.css targets cells directly, so it always wins over
+ * the color inherited from `table.tableblock` above — this rule needs to
+ * match `td`/`th` directly (not just the table) to actually override it.
+ */
+table.tableblock tr th,
+table.tableblock tr td {
   color: var(--github-fg-default);
 }
 

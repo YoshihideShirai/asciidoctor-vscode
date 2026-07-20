@@ -277,6 +277,10 @@ kbd {
   color: inherit;
 }
 
+.quoteblock blockquote::before {
+  content: none;
+}
+
 .quoteblock .attribution,
 .verseblock .attribution {
   color: var(--antora-gray-40);
