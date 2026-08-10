@@ -96,6 +96,14 @@ describe('asciidoc.extensions.kroki.serverUrl', () => {
     )
   })
 
+  test('allows WebAssembly compilation for the local PlantUML renderer', async () => {
+    const document = await createFile('= Doc\n\ndiagram', 'plantuml-csp.adoc')
+    createdFiles.push(document)
+    const csp = await renderCsp(document)
+    assert.match(csp, /script-src [^;]*'wasm-unsafe-eval'/)
+    assert.doesNotMatch(csp, /script-src [^;]*'unsafe-eval'/)
+  })
+
   test('uses the setting value when set', async () => {
     await vscode.workspace
       .getConfiguration('asciidoc.extensions', null)
