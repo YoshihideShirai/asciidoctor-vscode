@@ -29,6 +29,7 @@ import { AsciidoctorExtensionsProvider } from './asciidoctorExtensions.js'
 import { AsciidoctorProcessor } from './asciidoctorProcessor.js'
 import { registerBrowserIncludeProcessor } from './browserIncludeSupport.js'
 import { ResolverIncludeProcessor } from './includeProcessor.js'
+import { addPlantUmlToHtmlExport } from './plantumlExport.js'
 import { resolveBlockSourceLines } from './sourceLineMapping.js'
 import { getTemplateDirs } from './templateDirs.js'
 
@@ -193,7 +194,10 @@ export class AsciidocEngine {
       options.template_dirs = templateDirs
     }
     const document = await load(textDocument.getText(), options)
-    const output = await document.convert(options)
+    let output = String(await document.convert(options))
+    if (backend === 'html5') {
+      output = addPlantUmlToHtmlExport(output)
+    }
     return {
       output,
       document,
