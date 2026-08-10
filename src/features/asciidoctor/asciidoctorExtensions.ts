@@ -37,7 +37,7 @@ export class AsciidoctorExtensions {
       .get('enableKroki')
     if (enableKroki) {
       kroki.register(registry)
-    } else {
+    } else if (context?.mode !== 'load') {
       registry.block('plantuml', plantumlJSProcessor())
     }
     registry.block('mermaid', mermaidJSProcessor())
