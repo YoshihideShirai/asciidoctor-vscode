@@ -28,7 +28,8 @@ describe('addPlantUmlToHtmlExport', () => {
   })
 
   test('does not add the renderer when there is no PlantUML block', () => {
-    const html = '<html><body><div class="not-plantuml">text</div></body></html>'
+    const html =
+      '<html><body><div class="not-plantuml">text</div></body></html>'
     assert.equal(addPlantUmlToHtmlExport(html), html)
   })
 
