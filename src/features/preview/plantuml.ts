@@ -1,4 +1,8 @@
-import type { BlockProcessorDslInterface } from '@asciidoctor/core'
+import type {
+  AbstractBlock,
+  BlockProcessorDslInterface,
+  Reader,
+} from '@asciidoctor/core'
 
 const SAFE_MODE_SECURE = 20
 const BUILTIN_ATTRIBUTES = new Set([
@@ -28,6 +32,61 @@ function escapeHtml(value: string): string {
 
 function escapeAttribute(value: string): string {
   return escapeHtml(value).replace(/'/g, '&#39;')
+}
+
+export const PLANTUML_SOURCE_DATA_URI_PREFIX =
+  'data:application/vnd.asciidoctor-vscode.plantuml+json;base64,'
+
+interface EncodedPlantUmlDiagram {
+  source: string
+  targetId: string
+  format: string
+  options: Record<string, string>
+  role: string
+  option?: string
+}
+
+export function encodePlantUmlDiagram(diagram: EncodedPlantUmlDiagram): string {
+  return `${PLANTUML_SOURCE_DATA_URI_PREFIX}${Buffer.from(JSON.stringify(diagram), 'utf8').toString('base64')}`
+}
+
+export function decodePlantUmlDiagram(
+  target: unknown,
+): EncodedPlantUmlDiagram | undefined {
+  if (
+    typeof target !== 'string' ||
+    !target.startsWith(PLANTUML_SOURCE_DATA_URI_PREFIX)
+  ) {
+    return undefined
+  }
+  try {
+    const decoded = JSON.parse(
+      Buffer.from(
+        target.slice(PLANTUML_SOURCE_DATA_URI_PREFIX.length),
+        'base64',
+      ).toString('utf8'),
+    ) as Partial<EncodedPlantUmlDiagram>
+    if (
+      typeof decoded.source !== 'string' ||
+      typeof decoded.targetId !== 'string' ||
+      typeof decoded.format !== 'string' ||
+      typeof decoded.role !== 'string' ||
+      decoded.options === undefined ||
+      typeof decoded.options !== 'object'
+    ) {
+      return undefined
+    }
+    return {
+      source: decoded.source,
+      targetId: decoded.targetId,
+      format: decoded.format,
+      options: decoded.options as Record<string, string>,
+      role: decoded.role,
+      option: typeof decoded.option === 'string' ? decoded.option : undefined,
+    }
+  } catch {
+    return undefined
+  }
 }
 
 function isNumeric(value: string): boolean {
@@ -62,77 +121,77 @@ function userOptions(attrs: Record<string, unknown>): Record<string, string> {
   ) as Record<string, string>
 }
 
-function captionedFigureTitle(
-  title: string | undefined,
-  explicitCaption: string | undefined,
-  doc: any,
-): string {
-  if (title === undefined) {
-    return ''
-  }
-  const docAttributes = doc.getAttributes()
-  const globalCaption = docAttributes.caption
-  let caption = ''
-  if (explicitCaption !== undefined || globalCaption !== undefined) {
-    caption = explicitCaption !== undefined ? explicitCaption : globalCaption
-  } else {
-    const figureCaption = docAttributes['figure-caption']
-    if (figureCaption) {
-      caption = `${figureCaption} ${doc.counter('figure-number')}. `
-    }
-  }
-  return `<div class='title'>${escapeHtml(`${caption}${title}`)}</div>`
-}
-
 export function plantumlJSProcessor() {
   let diagramSequence = 0
   return function (this: BlockProcessorDslInterface) {
     this.onContext(['listing', 'literal'])
     this.positionalAttributes('target', 'format')
-    ;(this as any).process(async (parent: any, reader: any, attrs: any) => {
-      const doc = parent.getDocument() as any
-      const id = `plantuml-${++diagramSequence}`
-      let diagramText = reader.getString()
-      if (attrs.subs) {
-        diagramText = await (parent as any).applySubs(
-          diagramText,
-          (parent as any).resolveSubs(attrs.subs),
-        )
-      }
-      if (doc.getSafe() < SAFE_MODE_SECURE) {
-        const plantUmlIncludeFile = doc.getAttribute('kroki-plantuml-include')
-        if (plantUmlIncludeFile) {
-          diagramText = `!include ${plantUmlIncludeFile}\n${diagramText}`
+    ;(this as any).process(
+      async (
+        parent: AbstractBlock,
+        reader: Reader,
+        attrs: Record<string, unknown>,
+      ) => {
+        const doc = parent.getDocument() as any
+        const id = `plantuml-${++diagramSequence}`
+        let diagramText = reader.getString()
+        if (attrs.subs) {
+          diagramText = await (parent as any).applySubs(
+            diagramText,
+            (parent as any).resolveSubs(attrs.subs),
+          )
         }
-      }
-      const format = String(
-        attrs.format || doc.getAttribute('kroki-default-format') || 'svg',
-      )
-      const blockAttrs = { ...attrs }
-      const option = optionFrom(attrs, doc)
-      blockAttrs.role = krokiRole(attrs, format)
-      blockAttrs.format = format
-      delete blockAttrs.title
-      delete blockAttrs.caption
-      delete blockAttrs.opts
-      if (option && option !== 'none') {
-        blockAttrs[`${option}-option`] = ''
-      }
-      const classes = ['plantuml', ...krokiRole(attrs, format).split(/\s+/)]
-      if (option && option !== 'none') {
-        classes.push(`${option}-option`)
-      }
-      const diagramTextAttribute = escapeHtml(diagramText)
-      const optionsAttribute = escapeAttribute(
-        JSON.stringify(userOptions(attrs)),
-      )
-      const title = captionedFigureTitle(attrs.title, attrs.caption, doc)
-      return this.createBlock(
-        parent,
-        'pass',
-        `<div class='imageblock ${escapeAttribute(krokiRole(attrs, format))}'><div class='content'><div class='${escapeAttribute(classes.join(' '))}' data-plantuml-target='${id}' data-plantuml-format='${escapeAttribute(format)}' data-plantuml-options='${optionsAttribute}'><pre class='plantuml-source' hidden>${diagramTextAttribute}</pre><div id='${id}' class='plantuml-target'></div></div></div>${title}</div>`,
-        blockAttrs,
-      )
-    })
+        if (doc.getSafe() < SAFE_MODE_SECURE) {
+          const plantUmlIncludeFile = doc.getAttribute('kroki-plantuml-include')
+          if (plantUmlIncludeFile) {
+            diagramText = `!include ${plantUmlIncludeFile}\n${diagramText}`
+          }
+        }
+        const format = String(
+          attrs.format || doc.getAttribute('kroki-default-format') || 'svg',
+        )
+        const blockAttrs = { ...attrs }
+        const option = optionFrom(attrs, doc)
+        const role = krokiRole(attrs, format)
+        blockAttrs.role = role
+        blockAttrs.target = encodePlantUmlDiagram({
+          source: diagramText,
+          targetId: id,
+          format,
+          options: userOptions(attrs),
+          role,
+          option,
+        })
+        blockAttrs.alt =
+          typeof attrs.title === 'string' ? attrs.title : 'PlantUML diagram'
+        delete blockAttrs.title
+        delete blockAttrs.caption
+        delete blockAttrs.format
+        delete blockAttrs.opts
+        delete blockAttrs['inline-option']
+        delete blockAttrs['interactive-option']
+        delete blockAttrs['none-option']
+        const block = (this as any).createImageBlock(parent, blockAttrs)
+        if (typeof attrs.title === 'string') {
+          block.title = attrs.title
+        }
+        if (typeof attrs.id === 'string') {
+          block.id = attrs.id
+        }
+        block.assignCaption(
+          typeof attrs.caption === 'string' ? attrs.caption : undefined,
+          'figure',
+        )
+        return block
+      },
+    )
   }
+}
+
+export function plantUmlDiagramToHtml(diagram: EncodedPlantUmlDiagram): string {
+  const classes = ['plantuml', ...diagram.role.split(/\s+/)]
+  if (diagram.option && diagram.option !== 'none') {
+    classes.push(`${diagram.option}-option`)
+  }
+  return `<div class='${escapeAttribute(classes.join(' '))}' data-plantuml-target='${escapeAttribute(diagram.targetId)}' data-plantuml-format='${escapeAttribute(diagram.format)}' data-plantuml-options='${escapeAttribute(JSON.stringify(diagram.options))}'><pre class='plantuml-source' hidden>${escapeHtml(diagram.source)}</pre><div id='${escapeAttribute(diagram.targetId)}' class='plantuml-target'></div></div>`
 }

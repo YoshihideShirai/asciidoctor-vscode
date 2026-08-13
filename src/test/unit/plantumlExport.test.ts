@@ -1,11 +1,44 @@
 import assert from 'node:assert/strict'
 import { describe, test } from 'node:test'
-import { addPlantUmlToHtmlExport } from '../../features/asciidoctor/plantumlExport.js'
+import {
+  addPlantUmlToHtmlExport,
+  restorePlantUmlImageBlocks,
+} from '../../features/asciidoctor/plantumlExport.js'
+import { encodePlantUmlDiagram } from '../../features/preview/plantuml.js'
 
 const plantumlBlock =
   "<div class='plantuml kroki'><pre class='plantuml-source' hidden>Alice -&gt; Bob</pre><div id='plantuml-1' class='plantuml-target'></div></div>"
 
 describe('addPlantUmlToHtmlExport', () => {
+  test('restores PlantUML image blocks before adding the export renderer', () => {
+    const target = encodePlantUmlDiagram({
+      source: 'Alice -> Bob',
+      targetId: 'plantuml-7',
+      format: 'png',
+      options: { theme: 'sketchy' },
+      role: 'wide kroki-format-png kroki',
+      option: 'inline',
+    })
+    const html = `<div class="imageblock wide kroki-format-png kroki">
+<div class="content">
+<img src="${target}" alt="Login flow">
+</div>
+<div class="title">Diagram 7. Login flow</div>
+</div>`
+
+    const restored = restorePlantUmlImageBlocks(html)
+
+    assert.match(restored, /class='plantuml wide kroki-format-png kroki/)
+    assert.match(restored, /inline-option/)
+    assert.match(restored, /data-plantuml-format='png'/)
+    assert.match(restored, /data-plantuml-options='\{"theme":"sketchy"\}'/)
+    assert.match(
+      restored,
+      /<pre class='plantuml-source' hidden>Alice -&gt; Bob/,
+    )
+    assert.match(restored, /<div class="title">Diagram 7\. Login flow<\/div>/)
+  })
+
   test('adds the PlantUML CDN renderer when exported HTML contains a PlantUML block', () => {
     const html = `<html><body>${plantumlBlock}</body></html>`
     const result = addPlantUmlToHtmlExport(html)
