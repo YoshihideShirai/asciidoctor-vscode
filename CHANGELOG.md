@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.2.2 (2026-08-19) - @ggrossetie
+
 ### Bug fixes
 
 * Replace a raw NUL byte in `asciidoctorWebViewConverter.ts` with the `\x00` escape sequence, so Git and GitHub stop treating the file as binary (no functional change)
